@@ -14,6 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $validacoes[] = 'O nome é obrigatório.';
     }
 
+    if (strlen($email) == 0) {
+        $validacoes[] = 'O email é obrigatório.';
+    }
+
     // A função filter_var valida o email
     // e retorna false se o email for inválido
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
