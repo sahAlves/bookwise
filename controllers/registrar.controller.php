@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validacao::validar() recebe um array de regras e os dados do formulário
     $validacao = Validacao::validar([
         'nome' => ['required'],
-        'email' => ['required', 'email', 'confirmed'],
+        'email' => ['required', 'email', 'confirmed', 'unique:usuarios'],
         'senha' => ['required', 'min:8', 'max:30', 'strong']
     ], $_POST);
 
@@ -29,3 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Location: /login');
     exit();
 }
+
+header('Location: /login');
+exit();
