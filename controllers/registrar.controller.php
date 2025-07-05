@@ -1,7 +1,5 @@
 <?php
 
-require 'Validacao.php';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Retorna um objeto de validação
@@ -13,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ], $_POST);
 
     // Verifica se a validação falhou
-    if($validacao->naoPassou()) {
+    if($validacao->naoPassou('registrar')) {
         header('Location: /login');
         exit();
     }
@@ -27,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'senha' => $_POST['senha']
             ]);
 
-    header('Location: /login?mensagem=Registrado com sucesso!');
+    flash()->push('mensagem', 'Registrado com sucesso! 👍🏻');
+    header('Location: /login');
     exit();
 }

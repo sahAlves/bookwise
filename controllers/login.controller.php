@@ -1,7 +1,5 @@
 <?php
 
-$mensagem = $_REQUEST['mensagem'] ?? '';  
-
 // 1. Receber o formulário com email e senha
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     $email = $_POST['email'];
@@ -13,7 +11,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     ], $_POST);
 
     // Verifica se a validação falhou
-    if($validacao->naoPassou()) {
+    if($validacao->naoPassou('login')) {
         header('Location: /login');
         exit();
     }
@@ -32,10 +30,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     if($usuario) {
         // 3. Se existir, nós vamos adicionar na sessão que o usuário está autenticado
         $_SESSION['auth'] = $usuario;
-        $_SESSION['mensagem'] = 'Seja bem vindo ' . $usuario->nome . '!';
+        flash()->push('mensagem', 'Seja bem vindo ' . $usuario->nome . '!');
         header('Location: /');
         exit();
     }
 }
 
-view('login', compact('mensagem'));
+view('login');

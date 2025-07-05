@@ -63,8 +63,12 @@ class Validacao {
         }
     }
 
-    public function naoPassou() {
-        $_SESSION['validacoes'] = $this->validacoes;
+    public function naoPassou($nomeCustomizado = null) {
+        $key = 'validacoes';
+        if ($nomeCustomizado) {
+            $key .= "_$nomeCustomizado";
+        }
+        flash()->push($key, $this->validacoes);
         return sizeof($this->validacoes) > 0;
     }
 }
