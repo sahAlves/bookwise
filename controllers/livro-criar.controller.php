@@ -31,8 +31,7 @@ if($validacao->naoPassou()) {
 $novoNome = md5(rand());
 $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
 $imagem = "images/$novoNome.$extensao";
-
-move_uploaded_file($_FILES['imagem']['tmp_name'], $imagem);
+move_uploaded_file($_FILES['imagem']['tmp_name'], __DIR__ . '/../public/' . $imagem);
 
 
 $database->query("INSERT INTO livros 
