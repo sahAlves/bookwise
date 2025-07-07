@@ -14,6 +14,7 @@ class Livro
     public $usuario_id;
     public $nota_avaliacao;
     public $count_avaliacoes;
+    public $imagem;
 
     public function query($where, $params) {
         $db = new Database(config('database'));
@@ -23,6 +24,7 @@ class Livro
                             l.autor,
                             l.descricao,
                             l.ano_de_lancamento,
+                            ifnull(l.imagem,'images/default.jpg') AS imagem,
                             ifnull(round(sum(a.nota) / count(a.id), 1),0) AS nota_avaliacao,
                             ifnull(count(a.id),0) AS count_avaliacoes
                         FROM
@@ -35,7 +37,8 @@ class Livro
                             l.titulo,
                             l.autor,
                             l.descricao,
-                            l.ano_de_lancamento", self::class, $params);
+                            l.ano_de_lancamento,
+                            l.imagem", self::class, $params);
     }
 
     public static function get($id)

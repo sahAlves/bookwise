@@ -11,7 +11,7 @@
     <div>
         <div class="border border-stone-700 rounded">
             <h1 class="border-b border-stone-700 text-stone-400 font-bold px-4 py-2">Cadastre um novo Livro!</h1>
-            <form class="p-4 space-y-4" method="POST" action="/livro-criar">
+            <form class="p-4 space-y-4" method="POST" action="/livro-criar" enctype="multipart/form-data">
                 <?php if ($validacoes = flash()->get('validacoes')): ?>
                     <div class="border-red-800 bg-red-900 text-red-400 px-4 py-1 rounded-md border-2 text-sm font-bold">
                         <ul>
@@ -22,6 +22,12 @@
                         </ul>
                     </div>
                 <?php endif; ?>
+                <div class="flex flex-col">
+                    <label class="text-stone-400 mb-1">Imagem</label>
+                    <input type="file"
+                        name="imagem"
+                        class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1" />
+                </div>
                 <div class="flex flex-col">
                     <label class="text-stone-400 mb-1">Título</label>
                     <input type="text"
