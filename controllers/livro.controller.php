@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Importa a classe DB que é responsável por acessar o banco de dados
 // Chama o método query da classe DB
@@ -6,7 +6,25 @@
 // que retorna um objeto Livro
 // O método fetch() busca o primeiro resultado da consulta
 $livro = $database
-    ->query("SELECT * FROM livros WHERE id = :id", Livro::class, ['id' => $_GET['id']])
+    ->query("SELECT
+                l.id,
+                l.titulo,
+                l.autor,
+                l.descricao,
+                l.ano_de_lancamento,
+                round(sum(a.nota) / count(a.id), 1) AS nota_avaliacao,
+                count(a.id) AS count_avaliacoes
+            FROM
+                livros AS l
+            LEFT JOIN avaliacoes AS a ON a.livro_id = l.id
+            WHERE
+                l.id = :id
+            GROUP BY
+                l.id,
+                l.titulo,
+                l.autor,
+                l.descricao,
+                l.ano_de_lancamento", Livro::class, ['id' => $_GET['id']])
     ->fetch();
 
 $avaliacoes = $database

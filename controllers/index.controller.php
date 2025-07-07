@@ -15,10 +15,25 @@ Não precisa passar todos os argumentos, só os que quiser.
 Parâmetros nomeados permitem que você diga explicitamente qual valor vai para qual parâmetro, deixando o código mais claro e flexível!*/
 $livros = $database
     ->query(
-        query: "SELECT * 
-                FROM livros 
+        query: "SELECT
+                    l.id,
+                    l.titulo,
+                    l.autor,
+                    l.descricao,
+                    l.ano_de_lancamento,
+                    round(sum(a.nota) / count(a.id), 1) AS nota_avaliacao,
+                    count(a.id) AS count_avaliacoes
+                FROM
+                    livros AS l
+                LEFT JOIN avaliacoes AS a ON a.livro_id = l.id
                 WHERE titulo LIKE :pesquisa 
-                OR autor LIKE :pesquisa", 
+                OR autor LIKE :pesquisa
+                GROUP BY
+                    l.id,
+                    l.titulo,
+                    l.autor,
+                    l.descricao,
+                    l.ano_de_lancamento", 
         class: Livro::class, 
         params: ['pesquisa' => "%$pesquisar%"])
     ->fetchAll();

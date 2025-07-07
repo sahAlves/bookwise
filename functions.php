@@ -48,7 +48,8 @@ function flash()
 
 // Função para carregar a configuração do sistema
 // Se um parâmetro for passado, retorna apenas o valor da chave especificada
-function config($key = null) {
+function config($key = null)
+{
     $config = require 'config.php';
     if (strlen($key) > 0) {
         return $config[$key];
@@ -58,8 +59,9 @@ function config($key = null) {
 
 // Função para verificar se o usuário está autenticado
 // Retorna o usuário autenticado ou null se não estiver autenticado
-function auth() {
-    if (!isset($_SESSION['auth'])){
+function auth()
+{
+    if (!isset($_SESSION['auth'])) {
         return null;
     }
     return $_SESSION['auth'];
@@ -69,27 +71,31 @@ function auth() {
 // Garante que o valor máximo seja 5 com min($media, 5).
 // Define quantas estrelas serão cheias, meia ou vazias.
 // Sempre exibe exatamente 5 estrelas no total.
-function gerarEstrelas($avaliacoes, $media = false)
+function gerarEstrelas($data, $object = false, $media = false)
 {
-
     // Função interna para gerar o span com o ícone
     $estrela = function ($icone) {
         return '<span class="material-icons text-yellow-500" style="font-size:16px;">' . $icone . '</span>';
     };
 
     if ($media) {
-        $totalAvaliacoes = count($avaliacoes);
 
-        // array_reduce percorre o array de avaliações somando o campo 'nota'.
-        // $carry armazena a soma acumulada a cada iteração.
-        // Usa ($carry ?? 0) para garantir que a soma comece de 0.
-        $sumNotas = array_reduce($avaliacoes, function ($carry, $a) {
-            return ($carry ?? 0) + $a->nota;
-        }) ?? 0;
+        if ($object) {
+            $totalAvaliacoes = count($data);
 
-        $media = $totalAvaliacoes > 0 ? $sumNotas / $totalAvaliacoes : 0;
+            // array_reduce percorre o array de avaliações somando o campo 'nota'.
+            // $carry armazena a soma acumulada a cada iteração.
+            // Usa ($carry ?? 0) para garantir que a soma comece de 0.
+            $sumNotas = array_reduce($data, function ($carry, $a) {
+                return ($carry ?? 0) + $a->nota;
+            }) ?? 0;
+
+            $media = $totalAvaliacoes > 0 ? $sumNotas / $totalAvaliacoes : 0;
+        } else {
+            $media = $data == 0 || null ? 0 : $data;
+        }
+
         $media = min($media, 5);
-
         // pega apenas a parte inteira da média (ex: 4.7 vira 4)
         $cheias = floor($media);
         // Se a parte decimal for ≥ 0.5 → coloca 1 meia estrela;
@@ -97,12 +103,12 @@ function gerarEstrelas($avaliacoes, $media = false)
         // Subtrai para saber quantas estrelas vazias faltam até completar 5.
         $vazias = 5 - $cheias - $meia;
         $notaFinal = str_repeat($estrela('star'), $cheias)
-             . str_repeat($estrela('star_half'), $meia)
-             . str_repeat($estrela('star_outline'), $vazias);
-        
+            . str_repeat($estrela('star_half'), $meia)
+            . str_repeat($estrela('star_outline'), $vazias);
+
         return $notaFinal;
     } else {
         // Considera que $avaliacoes é um objeto com a nota
-        return str_repeat($estrela('star'), $avaliacoes->nota);
+        return str_repeat($estrela('star'), $data->nota);
     }
 }
