@@ -64,3 +64,45 @@ function auth() {
     }
     return $_SESSION['auth'];
 }
+
+// Calcula a média de notas (de 1 a 5 estrelas) ou retorna quantas estrelas a pessoa avaliou.
+// Garante que o valor máximo seja 5 com min($media, 5).
+// Define quantas estrelas serão cheias, meia ou vazias.
+// Sempre exibe exatamente 5 estrelas no total.
+function gerarEstrelas($avaliacoes, $media = false)
+{
+
+    // Função interna para gerar o span com o ícone
+    $estrela = function ($icone) {
+        return '<span class="material-icons text-yellow-500" style="font-size:16px;">' . $icone . '</span>';
+    };
+
+    if ($media) {
+        $totalAvaliacoes = count($avaliacoes);
+
+        // array_reduce percorre o array de avaliações somando o campo 'nota'.
+        // $carry armazena a soma acumulada a cada iteração.
+        // Usa ($carry ?? 0) para garantir que a soma comece de 0.
+        $sumNotas = array_reduce($avaliacoes, function ($carry, $a) {
+            return ($carry ?? 0) + $a->nota;
+        }) ?? 0;
+
+        $media = $totalAvaliacoes > 0 ? $sumNotas / $totalAvaliacoes : 0;
+        $media = min($media, 5);
+
+        // pega apenas a parte inteira da média (ex: 4.7 vira 4)
+        $cheias = floor($media);
+        // Se a parte decimal for ≥ 0.5 → coloca 1 meia estrela;
+        $meia = ($media - $cheias) >= 0.5 ? 1 : 0;
+        // Subtrai para saber quantas estrelas vazias faltam até completar 5.
+        $vazias = 5 - $cheias - $meia;
+        $notaFinal = str_repeat($estrela('star'), $cheias)
+             . str_repeat($estrela('star_half'), $meia)
+             . str_repeat($estrela('star_outline'), $vazias);
+        
+        return $notaFinal;
+    } else {
+        // Considera que $avaliacoes é um objeto com a nota
+        return str_repeat($estrela('star'), $avaliacoes->nota);
+    }
+}
