@@ -75,7 +75,8 @@ function gerarEstrelas($data, $object = false, $media = false)
 {
     // Função interna para gerar o span com o ícone
     $estrela = function ($icone) {
-        return '<span class="material-icons text-yellow-500" style="font-size:16px;">' . $icone . '</span>';
+        $classe = $icone === 'star_outline' ? '' : 'text-yellow-500';
+        return '<span class="material-icons ' . $classe . '" style="font-size:16px;">' . $icone . '</span>';
     };
 
     if ($media) {
