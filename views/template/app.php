@@ -13,7 +13,9 @@
                 <div class="font-bold text-xl tracking-wide">Book Wise</div>
                 <ul class="flex space-x-4 font-bold">
                     <li><a href="/" class="text-lime-500">Explorar</a></li>
-                    <li><a href="/meus-livros" class="hover:underline">Meus Livros</a></li>
+                    <?php if ( auth() ): ?>
+                        <li><a href="/meus-livros" class="hover:underline">Meus Livros</a></li>
+                    <?php endif; ?>
                 </ul>
                 <ul>
                     <?php if ( auth() ): ?>

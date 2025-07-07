@@ -1,7 +1,21 @@
-<h1>Meus livros</h1>
+<h1 class="mt-6 font-bold text-lg">Meus livros</h1>
 
 <div class="grid grid-cols-4 gap-4">
-    <div class="col-span-3 gap-4 grid">
+    <div class="col-span-3 flex flex-col gap-4">
+        <?php foreach ($livros as $livro): ?>
+            <div class="p-2 rounded border-2 border-stone-800 bg-stone-900">
+                <div class="flex">
+                    <div class="w-1/3">Imagem</div>
+                    <div class="space-y-1">
+                        <a href="/livro?id=<?= $livro->id ?>" class="font-semibold hover:underline"><?= $livro->titulo ?></a>
+                        <div class="text-xs italic"><?= $livro->autor ?></div>
+                    </div>
+                </div>
+                <div class="text-sm mt-2">
+                    <?= $livro->descricao ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
     <div>
         <div class="border border-stone-700 rounded">
@@ -21,13 +35,13 @@
                     <label class="text-stone-400 mb-1">Título</label>
                     <input type="text"
                         name="titulo"
-                        class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1"/>
+                        class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1" />
                 </div>
                 <div class="flex flex-col">
                     <label class="text-stone-400 mb-1">Autor</label>
                     <input type="text"
                         name="autor"
-                        class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1"/>
+                        class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1" />
                 </div>
                 <div class="flex flex-col">
                     <label class="text-stone-400 mb-1">Descrição</label>
@@ -38,8 +52,8 @@
                 <div class="flex flex-col">
                     <label class="text-stone-400 mb-1">Ano de Lançamento</label>
                     <select name="ano_de_lancamento" class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1">
-                        <?php foreach(range(1800, date('Y')) as $ano ):?>
-                            <option value="<?=$ano?>"><?=$ano?></option>
+                        <?php foreach (range(1800, date('Y')) as $ano): ?>
+                            <option value="<?= $ano ?>"><?= $ano ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
